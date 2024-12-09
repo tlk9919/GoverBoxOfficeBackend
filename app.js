@@ -1,7 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const userRoutes = require('./routes/userRoutes'); // 引入用户路由
-const houseRoutes=require('./routes/houseRoutes');
+const userRoutes = require('./routes/routes'); // 引入用户路由
+const houseRoutes = require('./routes/routes');
+
 require('dotenv').config();
 const app = express();
 

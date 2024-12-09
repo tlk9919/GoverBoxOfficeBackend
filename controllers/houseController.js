@@ -26,8 +26,27 @@ async function getFilters(req, res) {
         return res.status(500).json({sucess: false,message:'获取筛选条件失败'});
     }
 }
+//获取房源详情
+async function getHouseDetail(req, res) {
+    try { //获取前端的请求
+        const houseId = parseInt(req.params.id);
+        console.log('前端传来的id',houseId)
+        //调用服务层
+        const house = await  houseService.getHousesDetailById(houseId)
+        console.log('经过服务层处理传来的房源',house)
+        //请求成功
+        if (house) {
+            return res.json({success: true, house});
+        } else {
+            return res.json({message: '房源未找到'});
+        }
+    } catch (e) {
+        return  res.json({ message: '服务器错误', error: error.message });
+    }
+}
 
 module.exports = {
     getHouses,
-    getFilters
+    getFilters,
+    getHouseDetail
 }

@@ -29,7 +29,25 @@ function getAllHouses(filtersQuery) {
 function getFilters(){
     return filters;
 }
+//房源详情
+async function getHousesDetailById(houseId){
+    try {
+        const house = await allHouses.find((h) => {
+            return h.id === houseId
+        })
+        console.log('获取的房源信息：',house)
+        if (house) {
+            return house
+        } else {
+            console.log('查看房源详情失败');
+        }
+    } catch (e) {
+        throw new Error('房源未找到')
+    }
+}
+
 module.exports={
     getAllHouses,
-    getFilters
+    getFilters,
+    getHousesDetailById
 }
