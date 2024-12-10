@@ -13,7 +13,8 @@ router.get('/houses', houseController.getHouses);
 router.get('/filters', houseController.getFilters);
 //获取房源详情
 router.get('/houseDetail/:id', houseController.getHouseDetail)
-//获取房票详情
+//获取房票
 router.get('/ticket',ticketController.loadTickets)
-
+//获取房票详情
+router.get('/:id',ticketController.loadTicketDetails)
 module.exports = router;
