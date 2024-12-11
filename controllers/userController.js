@@ -1,21 +1,33 @@
 const userService = require('../services/userService'); // 引入服务层
 const { sendVerificationCode } = require('../services/emailService'); // 引入发送验证码的函数
 
+
 // 登录控制器
 async function login(req, res) {
-    const { phone, verificationCode } = req.body;
-
-    if (!phone || !verificationCode) {
-        return res.status(400).json({ message: '手机号或验证码不能为空' });
+    const { idCard, phone, verificationCode } = req.body;
+    //打印亲段传来的数据
+    console.log('前端传来的数据有',idCard, phone, verificationCode);
+    //验证必填项
+    if(!idCard|| !phone || !verificationCode){
+        return res.status(400).json({message:'身份证号、手机号或验证码不能为空'})
     }
-
+    //调用服务处的登录
     try {
-        const user = await userService.loginUser(phone, verificationCode);
-        return res.status(200).json(user); // 返回用户信息和token
+        const user = userService.loginUser(idCard, phone, verificationCode);
+        //返回给前端
+        return res.status(200).json(user);
     } catch (err) {
+        if(err.message==='身份证号或手机号不存在'){
+            return res.status(404).json({message:'用户不存在'})
+        }
+        if (err.message === '验证码错误') {
+            return res.status(400).json({ message: '验证码错误' });
+        }
         return res.status(500).json({ message: '服务器内部错误' });
     }
 }
+
+
 
 // 发送验证码接口
 async function sendVerificationCodeAPI(req, res) {

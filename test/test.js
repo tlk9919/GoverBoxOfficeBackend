@@ -1,37 +1,30 @@
-const express = require('express');
-const cors = require('cors');
-const app = express();
+const userService = require('../services/userService'); // 引入服务层
+const { sendVerificationCode } = require('../services/emailService'); // 引入发送验证码的函数
 
-app.use(cors());
-app.use(express.json());
+// 登录控制器
+async function login(req, res) {
+    const { idCard, phone, verificationCode } = req.body;
 
-// 模拟数据库数据
-const tickets = [
-    {
-        id: 1,
-        collectionUnit: '单位A',
-        status: '未使用',
-        amount: 100,
-        validFrom: '2024-01-01',
-        validTo: '2024-12-31'
-    },
-    {
-        id: 2,
-        collectionUnit: '单位B',
-        status: '已使用',
-        amount: 200,
-        validFrom: '2024-02-01',
-        validTo: '2024-11-30'
+    // 验证必填字段
+    if (!idCard || !phone || !verificationCode) {
+        return res.status(400).json({ message: '身份证号、手机号或验证码不能为空' });
     }
-];
 
-// 获取所有房票数据
-app.get('/api/ticket', (req, res) => {
-    res.json(tickets);
-});
+    try {
+        // 调用服务层的登录方法
+        const user = await userService.loginUser(idCard, phone, verificationCode);
 
-// 启动服务
-const PORT = 3000;
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
-});
+        // 返回成功的响应，包含用户信息和Token
+        return res.status(200).json(user);
+
+    } catch (err) {
+        // 返回错误信息
+        if (err.message === '身份证号或手机号不存在') {
+            return res.status(404).json({ message: '用户不存在' });
+        }
+        if (err.message === '验证码错误') {
+            return res.status(400).json({ message: '验证码错误' });
+        }
+        return res.status(500).json({ message: '服务器内部错误' });
+    }
+}

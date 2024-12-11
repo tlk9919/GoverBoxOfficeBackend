@@ -1,27 +1,30 @@
 const userModel = require('../models/user'); // 引入模型
 const jwtUtils = require('../utils/jwtUtils'); // 引入JWT工具
-
-// 用户登录
-async function loginUser(phone, verificationCode) {
-    try {
-        const users = await userModel.findUserByPhoneAndVerificationCode(phone, verificationCode);
+async function loginUser(idCard, phone, verificationCode){
+    try { //调用model,查找用户根据身份证和手机号查询
+        const users = await userModel.findUserByIdCardAndPhone(idCard, phone, verificationCode);
 
         if (users.length === 0) {
-            throw new Error('手机号或验证码错误');
+            throw new Error('身份证号或手机号不存在');
         }
-
         const user = users[0];
+        if (user.verifyIdentity !== verificationCode) {
+            throw new Error('验证码错误');
+        }
+        // 验证成功，生成Token
         const token = jwtUtils.generateToken(user.id, user.name);
 
         return {
             message: '登录成功',
-            user: { id: user.id, name: user.name, phone: user.phone },
+            user:user,
             token
         };
     } catch (err) {
-        throw err; // 抛出错误
+        throw err;
     }
+
 }
+
 
 module.exports = {
     loginUser

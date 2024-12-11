@@ -1,18 +1,21 @@
 const pool = require('../config/dbConfig');
 
 // 查询用户是否存在
-function findUserByPhoneAndVerificationCode(phone, verificationCode) {
+function findUserByIdCardAndPhone(idCard, phone) {
+ //返回一个Promise
     return new Promise((resolve, reject) => {
-        const sql = 'SELECT * FROM users WHERE phone = ? AND verificationCode = ?';
-        pool.execute(sql, [phone, verificationCode], (err, results) => {
+        //执行数据库查询
+        const sql = 'SELECT * FROM users WHERE idCard = ? AND phone = ?';
+        pool.execute(sql,[idCard,phone],(err, result) => {
             if (err) {
-                return reject(err);
+                reject(err);
             }
-            resolve(results);
-        });
-    });
+            resolve(result);
+            console.log('从数据库获取的用户有',result)
+        })
+    })
 }
 
 module.exports = {
-    findUserByPhoneAndVerificationCode
+    findUserByIdCardAndPhone
 };

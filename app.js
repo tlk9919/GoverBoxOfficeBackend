@@ -1,8 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const userRoutes = require('./routes/routes'); // 引入用户路由
-const houseRoutes = require('./routes/routes');
-const ticketRoutes = require('./routes/routes');
+const routes = require('./routes/routes'); // 引入所有路由
 
 require('dotenv').config();
 const app = express();
@@ -11,10 +9,14 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// 注册路由
-app.use('/api/user', userRoutes);  // 用户相关路由
-app.use('/api', houseRoutes);
-app.use('/api/ticketDetail', ticketRoutes);
+// 注册所有路由
+app.use('/api/user', routes.loginRoute);
+app.use('/api/houses', routes.getHousesRoute);
+app.use('/api/filters', routes.getFiltersRoute);
+app.use('/api/houseDetail', routes.getHouseDetailRoute);
+app.use('/api/ticket', routes.loadTicketsRoute);
+app.use('/api/ticketDetail', routes.loadTicketDetailsRoute);
+app.use('/api/profile', routes.getProfileRoute);
 
 // 启动服务器
 const PORT = process.env.PORT || 5000;
