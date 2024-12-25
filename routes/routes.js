@@ -20,13 +20,13 @@ const getHousesRoute = router.get('/myHouses', houseController.getHouses);
 const getFiltersRoute = router.get('/myFilter', houseController.getFilters);
 
 // 获取单个房源详情
-const getHouseDetailRoute = router.get('myHouseDetail/:id', houseController.getHouseDetail);
+const getHouseDetailRoute = router.get('/myHouseDetail/:id', houseController.getHouseDetail);
 
 // 获取房票
 const loadTicketsRoute = router.get('/myTicket', ticketController.loadTickets);
 
 // 获取房票详情
-const loadTicketDetailsRoute = router.get('myTicketDetail/:id', ticketController.loadTicketDetails);
+const loadTicketDetailsRoute = router.get('/myTicketDetail/:id', ticketController.loadTicketDetails);
 
 // 获取个人信息
 const getProfileRoute = router.get('/myProfile', profileController.findUserController);
