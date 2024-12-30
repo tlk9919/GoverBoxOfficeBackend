@@ -7,19 +7,19 @@ function getAllHouses(filtersQuery) {
     // 根据筛选条件逐一过滤房源数据
     // 根据地区过滤房源
     if(area){
-        filteredHouses=filteredHouses.filter(house => {house.area===area})
+        filteredHouses=filteredHouses.filter(house => house.area===area)
     }
     //根据面积范围过滤房源
     if(areaRange){
-        filteredHouses=filteredHouses.filter(house => {house.areaRange===areaRange})
+        filteredHouses=filteredHouses.filter(house =>  house.areaRange===areaRange)
     }
     //根据户型过滤房源
     if(areaRange){
-        houseType=filteredHouses.filter(house => {house.houseType===houseType})
+        houseType=filteredHouses.filter(house =>  house.houseType===houseType)
     }
     //据价格范围过滤房源
     if(areaRange){
-        houseType=filteredHouses.filter(house => {house.price===price})
+        houseType=filteredHouses.filter(house =>  house.price===price)
     }
     // 返回过滤后的房源数据
     return filteredHouses;

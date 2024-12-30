@@ -17,7 +17,7 @@ app.use('/api/houseDetail', routes.getHouseDetailRoute);
 app.use('/api/ticket', routes.loadTicketsRoute);
 app.use('/api/ticketDetail', routes.loadTicketDetailsRoute);
 app.use('/api/profile', routes.getProfileRoute);
-
+app.use('/api/houses/filter', routes.filterHousesRoute);
 // 启动服务器
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

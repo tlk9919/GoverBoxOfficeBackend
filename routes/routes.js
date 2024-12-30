@@ -15,7 +15,7 @@ const sendVerificationCodeRoute = router.post('/send-code', userController.sendV
 
 // 获取房源详情
 const getHousesRoute = router.get('/myHouses', houseController.getHouses);
-
+const filterHousesRoute = router.get('/filter', houseController.getHouses);
 // 获取筛选条件数据
 const getFiltersRoute = router.get('/myFilter', houseController.getFilters);
 
@@ -40,5 +40,6 @@ module.exports = {
     getHouseDetailRoute,
     loadTicketsRoute,
     loadTicketDetailsRoute,
-    getProfileRoute
+    getProfileRoute,
+    filterHousesRoute
 };

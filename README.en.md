@@ -1,7 +1,7 @@
 # GoverBoxOfficeBackend 
 
 #### Description
-政务票房后台管理系统
+小程序期末课设-tlk-政务票房后台管理系统
 
 #### Software Architecture
 Software architecture description

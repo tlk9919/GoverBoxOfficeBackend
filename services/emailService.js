@@ -1,32 +1,34 @@
 const nodemailer = require('nodemailer');
-require('dotenv').config(); // 加载 .env 文件
+const { saveVerificationCode } = require('../models/verificationCodeModel');
 
-// 创建发送验证码的函数
-async function sendVerificationCode(email) {
-    // 生成6位验证码
-    const verificationCode = Math.floor(100000 + Math.random() * 900000);
+async function sendVerificationCode(phone) {
+    // 生成6位随机验证码
+    const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+
+    // 保存验证码到数据库
+    await saveVerificationCode(phone, verificationCode);
 
     // 创建邮件传输对象
     const transporter = nodemailer.createTransport({
-        service: '126', // 使用 126 邮箱
+        service: '126',
         auth: {
-            user: process.env.EMAIL_USER,  // 发件人邮箱（从环境变量获取）
-            pass: process.env.EMAIL_PASS,  // 授权码（从环境变量获取）
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASS,
         },
     });
 
     // 邮件内容配置
     const mailOptions = {
-        from: process.env.EMAIL_USER, // 发件人邮箱
-        to: email, // 收件人邮箱
-        subject: '政府房票', // 邮件主题
-        text: `您的验证码是：${verificationCode}`, // 邮件内容
+        from: process.env.EMAIL_USER,
+        to: phone,
+        subject: '【政府房票】',
+        text: `您的验证码是：${verificationCode},验证码5分钟内有效`,
     };
 
     // 发送邮件
     try {
         await transporter.sendMail(mailOptions);
-        return verificationCode; // 返回验证码
+        return { verificationCode }; // 返回验证码
     } catch (err) {
         console.error('发送邮件失败:', err.message);  // 打印详细错误
         throw new Error('发送验证码失败');
@@ -34,5 +36,5 @@ async function sendVerificationCode(email) {
 }
 
 module.exports = {
-    sendVerificationCode,
+    sendVerificationCode
 };

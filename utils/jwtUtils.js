@@ -9,14 +9,14 @@ function generateToken(userId, userName) {
     };
 
     const secret = process.env.JWT_SECRET || 'your_secret_key'; // 使用环境变量中的密钥
-    const options = { expiresIn: '1h' }; // 设置 token 过期时间
+    const options = { expiresIn: '1h' };
 
     return jwt.sign(payload, secret, options);
 }
 
 // 验证 JWT Token
 function verifyToken(token) {
-    const secret = process.env.JWT_SECRET || 'your_secret_key';
+    const secret = process.env.JWT_SECRET || 'my_secret_key';
 
     try {
         const decoded = jwt.verify(token, secret);
